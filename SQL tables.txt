@@ -1,0 +1,7 @@
+mysql> create database Online_Banking_System;
+
+mysql> use Online_Banking_System;
+
+create table Accountant (userId varchar(20) primary key, password varchar(20),aname varchar(20));
+
+create table Customer (account_no varchar(20) primary key, password varchar(20), cname varchar(20), email varchar(20), mobile varchar(20), balance double);
