@@ -2,6 +2,21 @@ mysql> create database Online_Banking_System;
 
 mysql> use Online_Banking_System;
 
-create table Accountant (userId varchar(20) primary key, password varchar(20),aname varchar(20));
+create table Accountant (
+	userId int primary key auto_increment, 
+	password varchar(20) not null, 
+	aname varchar(20) not null
+);
 
-create table Customer (account_no varchar(20) primary key, password varchar(20), cname varchar(20), email varchar(20), mobile varchar(20), balance double);
+create table Customer (
+	account_no int primary key auto_increment,
+	password varchar(20) not null, 
+	cname varchar(20) not null, 
+	email varchar(20) not null, 
+	mobile varchar(20) not null, 
+	balance double,
+	loanammount double 
+);
+
+
+ALTER TABLE Customer AUTO_INCREMENT=1000; 

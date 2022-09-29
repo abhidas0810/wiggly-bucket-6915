@@ -15,10 +15,10 @@ public class DB {
 			e.printStackTrace();
 		}
 
-		String url = "jdbc:mysql://localhost:3306/web19sb101db";
+		String url = "jdbc:mysql://localhost:3306/Online_Banking_System";
 
 		try {
-			con = DriverManager.getConnection(url, "root", "root");
+			con = DriverManager.getConnection(url, "root", "1234");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
