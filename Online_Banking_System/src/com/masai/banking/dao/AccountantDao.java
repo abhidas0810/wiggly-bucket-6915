@@ -1,5 +1,7 @@
 package com.masai.banking.dao;
 
+import java.util.List;
+
 import com.masai.banking.bean.Accountant;
 import com.masai.banking.bean.Customer;
 import com.masai.banking.exceptions.AccountantException;
@@ -15,5 +17,9 @@ public interface AccountantDao {
 	public Customer getCustomerByAccountno(int account_no) throws CustomerException;
 
 	public Accountant loginAccountant(int userId, String password) throws AccountantException;
+
+	public List<Customer> getAllCustomer() throws CustomerException;
+
+	public Customer updateCustomerAccount(Customer customer) throws CustomerException;
 
 }

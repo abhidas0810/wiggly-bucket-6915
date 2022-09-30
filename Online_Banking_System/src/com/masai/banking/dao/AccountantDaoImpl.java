@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.masai.banking.bean.Accountant;
 import com.masai.banking.bean.Customer;
@@ -148,6 +150,143 @@ public class AccountantDaoImpl implements AccountantDao {
 		}
 
 		return accountant;
+	}
+
+	@Override
+	public List<Customer> getAllCustomer() throws CustomerException {
+
+		List<Customer> customers = new ArrayList<>();
+
+		try (Connection con = DB.provideConnection();) {
+
+			PreparedStatement ps = con.prepareStatement("select * from customer");
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+
+				int accountNo = rs.getInt("account_no");
+				String password = rs.getString("password");
+				String name = rs.getString("cname");
+				String email = rs.getString("email");
+				String mobile = rs.getString("mobile");
+				double balance = rs.getDouble("balance");
+				double loanammount = rs.getDouble("loanammount");
+
+				customers.add(new Customer(accountNo, password, name, email, mobile, balance, loanammount));
+
+			}
+
+		} catch (SQLException e) {
+
+			throw new CustomerException(e.getMessage());
+		}
+
+		if (customers.isEmpty()) {
+			throw new CustomerException("No Customer found.");
+		}
+
+		return customers;
+	}
+
+	@Override
+	public Customer updateCustomerAccount(Customer customer) throws CustomerException {
+
+		Customer newCustomer = null;
+
+		try (Connection con = DB.provideConnection();) {
+
+			PreparedStatement ps = con.prepareStatement("select * from customer where account_no = ?");
+
+			ps.setInt(1, customer.getAccount_no());
+
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+
+				String password = rs.getString("password");
+				String name = rs.getString("cname");
+				String email = rs.getString("email");
+				String mobile = rs.getString("mobile");
+				double balance = rs.getDouble("balance");
+				double loanammount = rs.getDouble("loanammount");
+
+				PreparedStatement ps2 = con.prepareStatement(
+						"update customer set password = ?, cname = ?, email = ?, mobile = ?, balance = ?, loanammount = ? where account_no = ?");
+
+				
+
+				if (customer.getPassword() != null) {
+					ps2.setString(1, customer.getPassword());
+				} else {
+					ps2.setString(1, password);
+				}
+				if (customer.getCname() != null) {
+					ps2.setString(2, customer.getCname());
+				} else {
+					ps2.setString(2, name);
+				}
+				if (customer.getEmail() != null) {
+					ps2.setString(3, customer.getEmail());
+				} else {
+					ps2.setString(3, email);
+				}
+				if (customer.getMobile() != null) {
+					ps2.setString(4, customer.getMobile());
+				} else {
+					ps2.setString(4, mobile);
+				}
+				if (customer.getBalance() >= 0) {
+					ps2.setDouble(5, customer.getBalance());
+				} else {
+					ps2.setDouble(5, balance);
+				}
+				if (customer.getLoanammount() >= 0) {
+					ps2.setDouble(6, customer.getLoanammount());
+				} else {
+					ps2.setDouble(6, loanammount);
+				}
+				ps2.setInt(7, customer.getAccount_no());
+			} else {
+				throw new CustomerException("Account number " + customer.getAccount_no() + " does not exists.");
+			}
+		} catch (SQLException e) {
+
+			throw new CustomerException(e.getMessage());
+		}
+
+		try (Connection con = DB.provideConnection();) {
+
+			PreparedStatement ps = con.prepareStatement("select * from customer where account_no = ?");
+
+			ps.setInt(1, customer.getAccount_no());
+
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+
+				int accountNo = rs.getInt("account_no");
+				String password = rs.getString("password");
+				String name = rs.getString("cname");
+				String email = rs.getString("email");
+				String mobile = rs.getString("mobile");
+				double balance = rs.getDouble("balance");
+				double loanammount = rs.getDouble("loanammount");
+
+				newCustomer = new Customer(accountNo, password, name, email, mobile, balance, loanammount);
+
+			} else {
+
+				throw new CustomerException("Account number " + customer.getAccount_no() + " does not exists.");
+			}
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+			throw new CustomerException(e.getMessage());
+		}
+
+		return newCustomer;
 	}
 
 }
