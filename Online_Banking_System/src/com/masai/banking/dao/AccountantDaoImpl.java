@@ -213,9 +213,7 @@ public class AccountantDaoImpl implements AccountantDao {
 
 				PreparedStatement ps2 = con.prepareStatement(
 						"update customer set password = ?, cname = ?, email = ?, mobile = ?, balance = ?, loanammount = ? where account_no = ?");
-
-				
-
+				ps2.setInt(7, customer.getAccount_no());
 				if (customer.getPassword() != null) {
 					ps2.setString(1, customer.getPassword());
 				} else {
@@ -246,7 +244,8 @@ public class AccountantDaoImpl implements AccountantDao {
 				} else {
 					ps2.setDouble(6, loanammount);
 				}
-				ps2.setInt(7, customer.getAccount_no());
+
+				ps.executeUpdate();
 			} else {
 				throw new CustomerException("Account number " + customer.getAccount_no() + " does not exists.");
 			}
@@ -287,6 +286,32 @@ public class AccountantDaoImpl implements AccountantDao {
 		}
 
 		return newCustomer;
+	}
+
+	@Override
+	public String closeCustomerAccount(int account_no) throws CustomerException {
+
+		String message = "Account number does not exists.";
+
+		try (Connection con = DB.provideConnection();) {
+
+			PreparedStatement ps = con.prepareStatement("delete from customer where account_no = ?;");
+			ps.setInt(1, account_no);
+
+			int x = ps.executeUpdate();
+
+			if (x > 0) {
+
+				message = "Account Closed Sucessfully!";
+			}
+
+		} catch (SQLException e) {
+
+			message = e.getMessage();
+		}
+
+		return message;
+
 	}
 
 }

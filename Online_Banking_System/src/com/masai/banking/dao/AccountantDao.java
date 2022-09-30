@@ -22,4 +22,6 @@ public interface AccountantDao {
 
 	public Customer updateCustomerAccount(Customer customer) throws CustomerException;
 
+	public String closeCustomerAccount(int account_no) throws CustomerException;
+
 }
