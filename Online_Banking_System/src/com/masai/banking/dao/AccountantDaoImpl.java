@@ -5,7 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.masai.banking.bean.Accountant;
 import com.masai.banking.bean.Customer;
+import com.masai.banking.exceptions.AccountantException;
+import com.masai.banking.exceptions.CustomerException;
 import com.masai.banking.utility.DB;
 
 public class AccountantDaoImpl implements AccountantDao {
@@ -74,7 +77,7 @@ public class AccountantDaoImpl implements AccountantDao {
 	}
 
 	@Override
-	public Customer getCustomerByAccountno(int account_no) {
+	public Customer getCustomerByAccountno(int account_no) throws CustomerException {
 
 		Customer customer = null;
 
@@ -98,14 +101,53 @@ public class AccountantDaoImpl implements AccountantDao {
 
 				customer = new Customer(accountNo, password, name, email, mobile, balance, loanammount);
 
+			} else {
+
+				throw new CustomerException("Account number " + account_no + " does not exists.");
 			}
 
 		} catch (SQLException e) {
 
 			e.printStackTrace();
+			throw new CustomerException(e.getMessage());
 		}
 
 		return customer;
+	}
+
+	@Override
+	public Accountant loginAccountant(int userId, String password) throws AccountantException {
+
+		Accountant accountant = null;
+
+		try (Connection con = DB.provideConnection();) {
+
+			PreparedStatement ps = con.prepareStatement("select * from accountant where userId = ? AND password = ?");
+
+			ps.setInt(1, userId);
+			ps.setString(2, password);
+
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+
+				int userid = rs.getInt("userId");
+				String pass = rs.getString("password");
+				String name = rs.getString("aname");
+
+				accountant = new Accountant(userid, pass, name);
+
+			} else {
+
+				throw new AccountantException("Invalid UserID or Password.");
+			}
+
+		} catch (SQLException e) {
+
+			throw new AccountantException(e.getMessage());
+		}
+
+		return accountant;
 	}
 
 }

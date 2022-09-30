@@ -13,10 +13,14 @@ create table Customer (
 	password varchar(20) not null, 
 	cname varchar(20) not null, 
 	email varchar(20) not null, 
-	mobile varchar(20) not null, 
+	mobile varchar(10) not null, 
 	balance double,
 	loanammount double 
 );
 
 
 ALTER TABLE Customer AUTO_INCREMENT=1000; 
+
+mysql> insert into accountant(password, aname) values (1234,'abhi');
+
+mysql> insert into accountant(password, aname) values (12345,'ram');

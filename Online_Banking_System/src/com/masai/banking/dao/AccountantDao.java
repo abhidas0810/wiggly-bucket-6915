@@ -1,6 +1,9 @@
 package com.masai.banking.dao;
 
+import com.masai.banking.bean.Accountant;
 import com.masai.banking.bean.Customer;
+import com.masai.banking.exceptions.AccountantException;
+import com.masai.banking.exceptions.CustomerException;
 
 public interface AccountantDao {
 
@@ -9,6 +12,8 @@ public interface AccountantDao {
 
 	public String registerCustomer2(Customer customer);
 
-	public Customer getCustomerByAccountno(int account_no);
+	public Customer getCustomerByAccountno(int account_no) throws CustomerException;
+
+	public Accountant loginAccountant(int userId, String password) throws AccountantException;
 
 }

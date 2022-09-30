@@ -5,8 +5,9 @@ import java.util.Scanner;
 import com.masai.banking.bean.Customer;
 import com.masai.banking.dao.AccountantDao;
 import com.masai.banking.dao.AccountantDaoImpl;
+import com.masai.banking.exceptions.CustomerException;
 
-public class getCustomerUseCase1 {
+public class GetCustomerUseCase1 {
 
 	public static void main(String[] args) {
 
@@ -16,12 +17,13 @@ public class getCustomerUseCase1 {
 		int accountNo = in.nextInt();
 
 		AccountantDao adao = new AccountantDaoImpl();
-		Customer customer = adao.getCustomerByAccountno(accountNo);
+		try {
+			Customer customer = adao.getCustomerByAccountno(accountNo);
 
-		if (customer != null) {
 			System.out.println(customer);
-		} else {
-			System.out.println("Customer does not exists.");
+		} catch (CustomerException e) {
+
+			System.out.println(e.getMessage());
 		}
 
 		in.close();
