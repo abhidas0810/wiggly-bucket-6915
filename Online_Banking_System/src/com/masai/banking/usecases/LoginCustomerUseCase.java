@@ -9,30 +9,30 @@ import com.masai.banking.exceptions.CustomerException;
 
 public class LoginCustomerUseCase {
 
-	public static void main(String[] args) {
+	public static boolean run() {
 
 		Scanner in = new Scanner(System.in);
 
-		System.out.println("Enter Accountant UswrId :");
+		System.out.println("Enter Account Number :");
 		int userId = in.nextInt();
 
-		System.out.println("Enter Accountant Password :");
+		System.out.println("Enter Account Password :");
 		String password = in.next();
 
-		CustomerDao adao = new CustometDaoImpl();
+		CustomerDao cdao = new CustometDaoImpl();
 
 		try {
 
-			Customer customer = adao.loginCustomer(userId, password);
+			Customer customer = cdao.loginCustomer(userId, password);
 			System.out.println("Welcome Account Holder : " + customer.getCname().toUpperCase());
-
+			return true;
 		} catch (CustomerException e) {
 
 			System.out.println(e.getMessage());
 		}
 
 		in.close();
-
+		return false;
 	}
 
 }

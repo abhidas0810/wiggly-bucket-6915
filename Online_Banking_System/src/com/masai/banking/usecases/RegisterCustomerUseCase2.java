@@ -8,7 +8,7 @@ import com.masai.banking.dao.AccountantDaoImpl;
 
 public class RegisterCustomerUseCase2 {
 
-	public static void main(String[] args) {
+	public static void run() {
 
 		Scanner in = new Scanner(System.in);
 

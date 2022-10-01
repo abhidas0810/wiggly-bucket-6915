@@ -9,7 +9,7 @@ import com.masai.banking.exceptions.AccountantException;
 
 public class LoginAccountantUseCase1 {
 
-	public static void main(String[] args) {
+	public static boolean run() {
 
 		Scanner in = new Scanner(System.in);
 
@@ -25,12 +25,13 @@ public class LoginAccountantUseCase1 {
 
 			Accountant accountant = adao.loginAccountant(userId, password);
 			System.out.println("Welcome Accountant : " + accountant.getAname().toUpperCase());
-
+			return true;
 		} catch (AccountantException e) {
 
 			System.out.println(e.getMessage());
 		}
 
 		in.close();
+		return false;
 	}
 }

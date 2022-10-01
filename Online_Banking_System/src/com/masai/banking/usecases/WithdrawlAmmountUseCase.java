@@ -8,7 +8,7 @@ import com.masai.banking.exceptions.CustomerException;
 
 public class WithdrawlAmmountUseCase {
 
-	public static void main(String[] args) {
+	public static void run() {
 
 		AccountantDao adao = new AccountantDaoImpl();
 

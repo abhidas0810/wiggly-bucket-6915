@@ -9,7 +9,7 @@ import com.masai.banking.exceptions.CustomerException;
 
 public class GetCustomerUseCase1 {
 
-	public static void main(String[] args) {
+	public static void run() {
 
 		Scanner in = new Scanner(System.in);
 

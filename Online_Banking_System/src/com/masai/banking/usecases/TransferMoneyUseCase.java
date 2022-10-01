@@ -8,7 +8,7 @@ import com.masai.banking.exceptions.CustomerException;
 
 public class TransferMoneyUseCase {
 
-	public static void main(String[] args) {
+	public static void run() {
 
 		CustomerDao cdao = new CustometDaoImpl();
 
