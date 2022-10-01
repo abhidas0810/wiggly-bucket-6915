@@ -114,7 +114,7 @@ public class App {
 				if (f) {
 					System.out.println("Please select an option");
 					System.out.println("++++++++++++++++++++++++++++++++++++");
-					System.out.println("Enter 1 For Customer Login");
+					System.out.println("Enter 1 For Money Transfer");
 					System.out.println("Enter 2 For Logout");
 					System.out.println("++++++++++++++++++++++++++++++++++++");
 					int case3 = in.nextInt();
