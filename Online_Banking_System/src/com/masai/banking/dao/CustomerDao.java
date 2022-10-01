@@ -7,4 +7,6 @@ public interface CustomerDao {
 
 	public Customer loginCustomer(int account_no, String password) throws CustomerException;
 
+	public void transferAmmount(int withdeawlAccount_no, String password, int transferToAccount_no, double ammount)
+			throws CustomerException;
 }

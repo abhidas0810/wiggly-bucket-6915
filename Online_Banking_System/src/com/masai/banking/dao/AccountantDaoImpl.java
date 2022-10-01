@@ -245,7 +245,7 @@ public class AccountantDaoImpl implements AccountantDao {
 					ps2.setDouble(6, loanammount);
 				}
 
-				ps.executeUpdate();
+				ps2.executeUpdate();
 			} else {
 				throw new CustomerException("Account number " + customer.getAccount_no() + " does not exists.");
 			}
@@ -312,6 +312,89 @@ public class AccountantDaoImpl implements AccountantDao {
 
 		return message;
 
+	}
+
+	@Override
+	public void withdrawAmmount(int account_no, String password, double ammount) throws CustomerException {
+
+		try (Connection con = DB.provideConnection();) {
+
+			PreparedStatement ps = con.prepareStatement("select * from customer where account_no = ?;");
+			ps.setInt(1, account_no);
+
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+				double balance = rs.getDouble("balance");
+				String pass = rs.getString("password");
+				if (pass.equals(password)) {
+					if (balance >= ammount) {
+						balance = balance - ammount;
+						PreparedStatement ps2 = con
+								.prepareStatement("update customer set balance = ? where account_no = ?;");
+
+						ps2.setDouble(1, balance);
+						ps2.setInt(2, account_no);
+
+						int x = ps2.executeUpdate();
+
+						if (x > 0) {
+							System.out.println("Withdrawl successfull! available balance is : " + balance);
+						}
+					} else {
+						throw new CustomerException(
+								"Account number " + account_no + " does not have sufficient balance for transaction.");
+					}
+				} else {
+					throw new CustomerException("Incorrect password.");
+				}
+
+			} else {
+
+				throw new CustomerException("Account number " + account_no + " does not exists.");
+			}
+
+		} catch (SQLException e) {
+
+			throw new CustomerException(e.getMessage());
+		}
+
+	}
+
+	@Override
+	public void depositAmmount(int account_no, double ammount) throws CustomerException {
+
+		try (Connection con = DB.provideConnection();) {
+
+			PreparedStatement ps = con.prepareStatement("select * from customer where account_no = ?;");
+			ps.setInt(1, account_no);
+
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+				double balance = rs.getDouble("balance");
+				balance = balance + ammount;
+				
+				PreparedStatement ps2 = con.prepareStatement("update customer set balance = ? where account_no = ?;");
+
+				ps2.setDouble(1, balance);
+				ps2.setInt(2, account_no);
+
+				int x = ps2.executeUpdate();
+
+				if (x > 0) {
+					System.out.println("Diposit successfull!");
+				}
+
+			} else {
+
+				throw new CustomerException("Account number " + account_no + " does not exists.");
+			}
+
+		} catch (SQLException e) {
+
+			throw new CustomerException(e.getMessage());
+		}
 	}
 
 }
